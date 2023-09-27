@@ -1,5 +1,23 @@
-
 https://kodekloud.com/blog/how-to-build-a-docker-image/
 
 ## docker build . -t sample-flask-app:v1
 ## docker container run -d -p 5000:5000 sample-flask-app:v1    #   use --rm to delete the container when stopped
+
+
+###  to create a image from the custom container
+1. Create a Container From an Existing Image
+docker container run -d --name mynginx nginx
+2. Make Changes to the Container
+docker exec -it mynginx /bin/bash # 
+3. Navigate to the nginx configuration file  (apt-get install vim)
+vi /usr/share/nginx/html/index.html
+curl http://localhost
+
+4. Exit the container and Commit the changes to create a new image
+docker container commit -a "abram-web" -m "Changed default NGINX welcome message" mynginx nginx-abram
+
+This command will create a new Docker image named nginx-abram from the modified mynginx container. 
+Note : that it's considered best practice to use the -a flag to sign the image with an author and include a commit message using the -m flag
+
+5. Let’s run the nginx-abram image as a container using the following command:
+docker container run -d --name=hello-nginx-abraham nginx-abram
